@@ -10,7 +10,7 @@ run() {
     local -r swigJavaOutDir="$currentTarget/java/de/dhbw/rahmlab/"$wrapLibName"/impl/"
 
     local -r wrapLibTarget="$wrapLibDir/$currentTarget"
-	local -r wrapLibInclude="$wrapLibTarget/include"
+	local -r wrapLibInclude="$wrapLibTarget/include/"
 
 	mkdir -p "$swigJavaOutDir"
 	mkdir -p "$currentTmp"
