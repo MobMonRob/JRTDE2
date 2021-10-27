@@ -1,0 +1,16 @@
+**/.vs
+**/x64
+**/x32
+**/Debug
+**/Release
+**/target
+
+#Inhalte von Verzeichnissen entfernen
+/JRTDE/src/main/java/de/dhbw/rahmlab/rtde/impl/
+/JRTDE/**/natives/
+
+#Dateien entfernen
+/swig/*.cpp
+/swig/gen*.i
+/Linux64/*.so
+**/.directory
