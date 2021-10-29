@@ -16,13 +16,13 @@ run() {
 	#-flto
 	#-c für nicht linken (nur .o erzeugen)
 	#-shared .so muss tun, damit sicher der Fehler nicht hier liegt.
-	g++ -c -fPIC -O3 -cpp -std=c++14 "$linuxTmp/"$wrapLibName"_wrap.cpp" \
+	g++ -c -fPIC -O3 -cpp -std=c++17 "$linuxTmp/"$wrapLibName"_wrap.cpp" \
 	-I"$javaIncludeLinux/linux" -I"$javaIncludeLinux" -I"$wrapLibInclude" \
 	-o "$linuxTmp/lib"$wrapLibName"_wrap.o"
 
 	#-flto
 	g++ -shared "$linuxTmp/lib"$wrapLibName"_wrap.o" -L"$wrapLibBinary" \
-	-lurcl \
+	-lurcl -lpthread \
 	-Wl,-rpath,'$ORIGIN/.' -o "$linuxTarget/libJ"$wrapLibName".so" \
 	-Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
 }
