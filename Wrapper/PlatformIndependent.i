@@ -25,6 +25,7 @@ SWIG_JAVABODY_METHODS(public, public, SWIGTYPE)
 //Interface cannot be instantiated
 %include <swiginterface.i>
 
+/*
 //Fixes [...]SwigJNI class to invoke NativeLibLoader
 %pragma(java) jniclassimports=%{
 import de.dhbw.rahmlab.vicon.datastream.nativelib.NativeLibLoader;
@@ -34,6 +35,12 @@ import de.dhbw.rahmlab.vicon.datastream.nativelib.NativeLibLoader;
 static {
 	NativeLibLoader.load();
 }
+%}
+*/
+
+%typemap(javaimports) SWIGTYPE
+%{
+import de.dhbw.rahmlab.urcl.impl.*;
 %}
 
 %{
@@ -94,7 +101,12 @@ using namespace urcl::primary_interface;
 //Parse the header files to generate wrappers
 %import "ur_client_library/comm/producer.h"
 %import "ur_client_library/comm/package.h"
-%import "ur_client_library/comm/pipeline.h"
+
+//////
+%interface_impl(urcl::comm::INotifier);
+%include "ur_client_library/comm/pipeline.h"
+//////
+
 %import "ur_client_library/comm/parser.h"
 %import "ur_client_library/comm/package_serializer.h"
 %import "ur_client_library/comm/stream.h"
@@ -102,7 +114,11 @@ using namespace urcl::primary_interface;
 %import "ur_client_library/comm/tcp_socket.h"
 %import "ur_client_library/comm/control_mode.h"
 %import "ur_client_library/comm/shell_consumer.h"
-%import "ur_client_library/comm/bin_parser.h"
+
+///////////////////
+// Needed by rtde_interface
+%include "ur_client_library/comm/bin_parser.h"
+///////////////////
 
 %interface_impl(urcl::control::ReverseInterface);
 %import "ur_client_library/control/reverse_interface.h"
@@ -145,7 +161,11 @@ using namespace urcl::primary_interface;
 %import "ur_client_library/primary/primary_parser.h"
 
 %import "ur_client_library/ur/datatypes.h"
-%import "ur_client_library/ur/version_information.h"
+
+///////
+%include "ur_client_library/ur/version_information.h"
+///////
+
 %import "ur_client_library/ur/tool_communication.h"
 %import "ur_client_library/ur/calibration_checker.h"
 %import "ur_client_library/ur/dashboard_client.h"
