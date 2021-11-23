@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>de.dhbw.rahmlab</groupId>
+    <artifactId>JRTDE</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>JRTDE</name>
+    <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <always_recreate_wrapper>false</always_recreate_wrapper>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>3.0.6</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <resources>
+            <resource>
+                <targetPath>${basedir}/target/classes/natives</targetPath>
+                <directory>${basedir}/natives</directory>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>Build natives</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>bash</executable>
+                            <commandlineArgs>${native_script}</commandlineArgs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>1.11.0</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <scripts>
+                                <script>
+<![CDATA[
+project.properties.setProperty('native_script', ${always_recreate_wrapper} == true ? '"${basedir}"/_regenerate-natives_dependency-recursive_Multiarch.sh' : '"${basedir}"/_ensure-natives_dependency-recursive_Multiarch.sh');
+//println ">>${always_recreate_wrapper}";
+]]>
+                                </script>
+                            </scripts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
