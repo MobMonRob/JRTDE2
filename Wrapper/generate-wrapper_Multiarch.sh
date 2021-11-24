@@ -16,7 +16,7 @@ run() {
 	mkdir -p "$currentTmp"
 
 	#-debug-tmsearch
-	swig -doxygen -Wall -Wextra -c++ -java -package "de.dhbw.rahmlab."$wrapLibName".impl" -outdir "$swigJavaOutDir" -o "$currentTmp/"$wrapLibName"_wrap.cpp" -I"$wrapLibInclude" ./PlatformIndependent.i
+	swig -doxygen -Wextra -cpperraswarn -c++ -java -package "de.dhbw.rahmlab."$wrapLibName".impl" -outdir "$swigJavaOutDir" -o "$currentTmp/"$wrapLibName"_wrap.cpp" -I"$wrapLibInclude" ./PlatformIndependent.i
 }
 
 run_bash run $@

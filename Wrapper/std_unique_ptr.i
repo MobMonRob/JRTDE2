@@ -17,29 +17,90 @@
     something else (e.g. use shared_ptr<> which SWIG supports fully).
  */
 
+%{
+#include <memory>
+%}
+
 %define %unique_ptr(TYPE)
 
-%typemap (jni) std::unique_ptr<TYPE > "jlong"
-%typemap (jtype) std::unique_ptr<TYPE > "long"
-%typemap (jstype) std::unique_ptr<TYPE > "$typemap(jstype, TYPE)"
+/////////////////////////////////////////////////////
+// out
+/////////////////////////////////////////////////////
 
 // C++ -> Java in JNI
-%typemap (out) std::unique_ptr<TYPE > %{
-//TM_out
+%typemap (out) std::unique_ptr<TYPE> %{
    jlong lpp = 0;
    *(TYPE**) &lpp = $1.release();
    $result = lpp;
 %}
 
+// C++ -> Java in JNI
+%typemap (out) std::unique_ptr<TYPE> & %{
+   jlong lpp = 0;
+   *(TYPE**) &lpp = $1->get();
+   $result = lpp;
+%}
+
+// C++ -> Java in JNI
+%typemap (out) std::unique_ptr<TYPE> * %{
+   jlong lpp = 0;
+   *(TYPE**) &lpp = $1->get();
+   $result = lpp;
+%}
+
+/////////////////////////////////////////////////////
+// javaout
+/////////////////////////////////////////////////////
+
 // Java Code
-%typemap(javaout) std::unique_ptr<TYPE > {
+%typemap(javaout) std::unique_ptr<TYPE> {
 //TM_javaout
      long cPtr = $jnicall;
-     // true indicates here the ownership transfer to java
-     return (cPtr == 0) ? null : new $typemap(jstype, TYPE)(cPtr, true);
+     if (cPtr == 0) return null;
+     // true here indicates the ownership transfer to java
+     return new $typemap(jstype, TYPE)(cPtr, true);
 }
 
-%template() std::unique_ptr<TYPE >;
+// Java Code
+%typemap(javaout) std::unique_ptr<TYPE> & {
+//TM_javaout&
+     long cPtr = $jnicall;
+     if (cPtr == 0) return null;
+     // false here indicates no ownership transfer to java
+     return new $typemap(jstype, TYPE)(cPtr, false);
+}
+
+// Java Code
+%typemap(javaout) std::unique_ptr<TYPE> * {
+//TM_javaout*
+     long cPtr = $jnicall;
+     if (cPtr == 0) return null;
+     // false here indicates no ownership transfer to java
+     return new $typemap(jstype, TYPE)(cPtr, false);
+}
+
+
+/////////////////////////////////////////////////////
+// (Other)
+/////////////////////////////////////////////////////
+
+%typemap (jni) std::unique_ptr<TYPE> "jlong"
+%typemap (jtype) std::unique_ptr<TYPE> "long"
+%typemap (jstype) std::unique_ptr<TYPE> "$typemap(jstype, TYPE)"
+
+// std::unique_ptr<TYPE> &
+// const version auto generated
+%typemap(jni) std::unique_ptr<TYPE> & = std::unique_ptr<TYPE>;
+%typemap(jtype) std::unique_ptr<TYPE> & = std::unique_ptr<TYPE>;
+%typemap(jstype) std::unique_ptr<TYPE> & = std::unique_ptr<TYPE>;
+
+// std::unique_ptr<TYPE> *
+// const version auto generated
+%typemap(jni) std::unique_ptr<TYPE> * = std::unique_ptr<TYPE>;
+%typemap(jtype) std::unique_ptr<TYPE> * = std::unique_ptr<TYPE>;
+%typemap(jstype) std::unique_ptr<TYPE> * = std::unique_ptr<TYPE>;
+
+%template() std::unique_ptr<TYPE>;
 
 %enddef
 
