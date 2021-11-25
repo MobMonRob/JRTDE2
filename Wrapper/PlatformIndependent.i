@@ -24,6 +24,7 @@ SWIG_JAVABODY_METHODS(public, public, SWIGTYPE)
 %include "std_unique_ptr.i"
 %include "std_vector_unique_ptr.i"
 %include "std_chrono.i"
+%include "urcl_log.i"
 
 //Interface cannot be instantiated
 %include <swiginterface.i>
@@ -150,10 +151,11 @@ using namespace urcl::primary_interface;
 
 %import "ur_client_library/control/trajectory_point_interface.h"
 
-//%import "ur_client_library/exceptions.h"
-
-%import "ur_client_library/log.h"
-%import "ur_client_library/default_log_handler.h"
+///////////////////
+//%warnfilter(401) urcl;
+//%warnfilter(516) urcl::UrException;
+//%include "ur_client_library/exceptions.h"
+///////////////////
 
 %import "ur_client_library/types.h"
 
@@ -224,6 +226,9 @@ using namespace urcl::primary_interface;
 %include "ur_client_library/rtde/rtde_writer.h"
 
 %unique_ptr(urcl::rtde_interface::DataPackage)
+// Es fehlen noch viele %catches mehr überall im Code!
+%catches(UrException) urcl::rtde_interface::RTDEClient::init;
+%catches(UrException) urcl::rtde_interface::RTDEClient::negotiateProtocolVersion;
 %include "ur_client_library/rtde/rtde_client.h"
 
 ///////////////////////
