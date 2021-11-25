@@ -23,6 +23,7 @@ SWIG_JAVABODY_METHODS(public, public, SWIGTYPE)
 
 %include "std_unique_ptr.i"
 %include "std_vector_unique_ptr.i"
+%include "std_chrono.i"
 
 //Interface cannot be instantiated
 %include <swiginterface.i>
