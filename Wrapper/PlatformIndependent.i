@@ -27,10 +27,9 @@ SWIG_JAVABODY_METHODS(public, public, SWIGTYPE)
 //Interface cannot be instantiated
 %include <swiginterface.i>
 
-/*
 //Fixes [...]SwigJNI class to invoke NativeLibLoader
 %pragma(java) jniclassimports=%{
-import de.dhbw.rahmlab.vicon.datastream.nativelib.NativeLibLoader;
+import de.dhbw.rahmlab.urcl.nativelib.NativeLibLoader;
 %}
 
 %pragma(java) jniclasscode=%{
@@ -38,7 +37,6 @@ static {
 	NativeLibLoader.load();
 }
 %}
-*/
 
 // Import in all Proxy Classes.
 // Um trotz "nspace" herauszufinden, wo die "SWIGTYPE_p_[...]" Stummel Proxy Klassen benutzt werden via netbeans "find usages".
