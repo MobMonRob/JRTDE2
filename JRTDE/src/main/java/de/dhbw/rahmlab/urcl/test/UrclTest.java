@@ -8,6 +8,7 @@ package de.dhbw.rahmlab.urcl.test;
 import de.dhbw.rahmlab.urcl.impl.urcl.comm.INotifier;
 import de.dhbw.rahmlab.urcl.impl.urcl.rtde_interface.DataPackage;
 import de.dhbw.rahmlab.urcl.impl.urcl.rtde_interface.RTDEClient;
+import de.dhbw.rahmlab.urcl.impl.urclSwig;
 
 /**
  *
@@ -16,13 +17,18 @@ import de.dhbw.rahmlab.urcl.impl.urcl.rtde_interface.RTDEClient;
 public class UrclTest {
 
     public static void main(String argv[]) {
+        RTDEClientExample();
+    }
+
+    public static void RTDEClientExample() {
         LogHandler loghandler = new LogHandler();
         loghandler.register();
 
         System.out.println("---------------------------------------------");
 
         //https://github.com/UniversalRobots/Universal_Robots_Client_Library/blob/1.0.0/examples/rtde_client.cpp
-        final String ROBOT_IP = "192.168.56.101";
+        final String ROBOT_IP = "192.168.12.2";
+        //https://github.com/UniversalRobots/Universal_Robots_Client_Library/tree/1.0.0/examples/resources
         final String OUTPUT_RECIPE_PATH = "/home/fabian/Desktop/_tmp/rtde_output_recipe.txt";
         final String INPUT_RECIPE_PATH = "/home/fabian/Desktop/_tmp/rtde_input_recipe.txt";
         final long READ_TIMEOUT_MILLISECONDS = 100;
@@ -32,6 +38,7 @@ public class UrclTest {
         INotifier notifier = new INotifier();
         RTDEClient myClient = new RTDEClient(ROBOT_IP, notifier, OUTPUT_RECIPE_PATH, INPUT_RECIPE_PATH);
 
+        // Man muss auf eine Exception hier relativ lange warten wegen des langen Timeouts des TCP_Clients.
         boolean inited = myClient.init();
         if (!inited) {
             System.out.println("init failed");

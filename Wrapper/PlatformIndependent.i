@@ -25,6 +25,7 @@ SWIG_JAVABODY_METHODS(public, public, SWIGTYPE)
 %include "std_vector_unique_ptr.i"
 %include "std_chrono.i"
 %include "urcl_log.i"
+%include "primitive_type_ptr.i"
 
 //Interface cannot be instantiated
 %include <swiginterface.i>
@@ -63,6 +64,8 @@ import de.dhbw.rahmlab.urcl.impl.*;
 
 
 %template (StringVector) std::vector<std::string>;
+
+%primitive_type_ptr(size_t, SizeT)
 
 
 %{
