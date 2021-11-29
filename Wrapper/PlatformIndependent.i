@@ -20,7 +20,6 @@ SWIG_JAVABODY_METHODS(public, public, SWIGTYPE)
 %include "arrays_java.i";
 %include "std_common.i"
 %include "java.swg"
-%include "various.i"
 
 %include "std_unique_ptr.i"
 %include "std_vector_unique_ptr.i"
@@ -68,10 +67,13 @@ import de.dhbw.rahmlab.urcl.impl.*;
 
 %primitive_type_ptr(size_t, SizeT)
 
-// The Java buffer has to be allocated with allocateDirect.
-%apply uint8_t* NIOBUFFER { unsigned char * buf };
-%apply uint8_t* NIOBUFFER { unsigned char * buffer };
-
+//%include "various.i"
+//%apply uint8_t* NIOBUFFER { unsigned char * buf };
+//%apply uint8_t* NIOBUFFER { unsigned char * buffer };
+//The serialization functions return the length of the new buffer.
+//This seems to be incompatbile with java.nio.buffer
+//because there might be boundary checks with outdated
+//capacity values. And there is no way to change them.
 
 %{
 //Includes the header files in the wrapper code
