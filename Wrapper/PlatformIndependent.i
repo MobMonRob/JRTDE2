@@ -241,6 +241,10 @@ using namespace urcl::primary_interface;
 //INotifier Director Destructor.
 //%feature("director") urcl::comm::INotifier;
 
+//SWIG Bug: SWIG uses the Base Destructor to delete the INotifier Director
+//RTDE: Not a Bug if it ist not intended to be used polymorphicallly.
+// - But against C++ recommendations that virtual methods imply virtual destructor.
+
 //Just don't use INotifierSWIGImpl.
 //But instead: Inherit from Notifier.java.
 //And use INotifier.java to point to it.
