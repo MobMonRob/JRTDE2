@@ -2,6 +2,15 @@
  * Similar functionality to %pointer_class(TYPE, NAME)
  * of https://github.com/swig/swig/blob/v4.0.1/Lib/cpointer.i
  * But works with C++ references too.
+ * 
+ * It is intended to be used for C++ functions/methods
+ * that manipulate their primitve typed arguments.
+ * For example:
+ * void manipulate(int* arg) {
+ *     *arg = 5;
+ * }
+ * 
+ * Example usage in SWIG: %primitive_type_ptr(int, IntClass)
 */
 
 
@@ -19,7 +28,12 @@
 %inline %{
     class NAME {
     public:
-    NAME() : valuePtr(std::make_unique<TYPE>()) {
+    /*
+     * No NAME(TYPE value) constructor given because
+     * temporary arguments make no sense in the
+     * intended use cases.
+    */
+    NAME() : valuePtr(std::make_unique<TYPE>(0)) {
     }
     
     void setValue(TYPE value) {
