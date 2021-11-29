@@ -1,3 +1,10 @@
+/*
+ * Similar functionality to %pointer_class(TYPE, NAME)
+ * of https://github.com/swig/swig/blob/v4.0.1/Lib/cpointer.i
+ * But works with C++ references too.
+*/
+
+
 %{
 #include <memory>
 %}
