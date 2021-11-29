@@ -20,6 +20,7 @@ SWIG_JAVABODY_METHODS(public, public, SWIGTYPE)
 %include "arrays_java.i";
 %include "std_common.i"
 %include "java.swg"
+%include "various.i"
 
 %include "std_unique_ptr.i"
 %include "std_vector_unique_ptr.i"
@@ -66,6 +67,10 @@ import de.dhbw.rahmlab.urcl.impl.*;
 %template (StringVector) std::vector<std::string>;
 
 %primitive_type_ptr(size_t, SizeT)
+
+// The Java buffer has to be allocated with allocateDirect.
+%apply uint8_t* NIOBUFFER { unsigned char * buf };
+%apply uint8_t* NIOBUFFER { unsigned char * buffer };
 
 
 %{
