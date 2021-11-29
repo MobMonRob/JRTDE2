@@ -20,6 +20,7 @@ SWIG_JAVABODY_METHODS(public, public, SWIGTYPE)
 %include "arrays_java.i";
 %include "std_common.i"
 %include "java.swg"
+%include "std_array.i"
 
 %include "std_unique_ptr.i"
 %include "std_vector_unique_ptr.i"
@@ -61,7 +62,14 @@ import de.dhbw.rahmlab.urcl.impl.*;
 
 %template (StringVector) std::vector<std::string>;
 
-%primitive_type_ptr(size_t, SizeT)
+%primitive_type_ptr(size_t, SizeTContainer)
+%primitive_type_ptr(bool, BoolContainer)
+%primitive_type_ptr(double, DoubleContainer)
+%primitive_type_ptr(int, IntContainer)
+%primitive_type_ptr(unsigned char, UCharContainer)
+%primitive_type_ptr(unsigned int, UIntContainer)
+%primitive_type_ptr(unsigned long, ULongContainer)
+%primitive_type_ptr(std::string, StdStringContainer)
 
 
 %{
@@ -128,9 +136,10 @@ using namespace urcl::primary_interface;
 ///////////////////////////
 %ignore generateSerializedRequest;
 %ignore serializeHeader;
-%ignore parseWith;
+//parseWith benötigt, damit DataPackage nicht abstrakt ist in Java
+//%ignore parseWith;
 %ignore serializePackage;
-%warnfilter(403);
+//%warnfilter(403);
 ///////////////////////////
 //%include "various.i"
 //%apply uint8_t* NIOBUFFER { unsigned char * buf };
@@ -152,10 +161,10 @@ using namespace urcl::primary_interface;
 //%import "ur_client_library/comm/parser.h"
 //%import "ur_client_library/comm/package_serializer.h"
 
-//%ignore urcl::comm::BinParser::parse;
-//%ignore urcl::comm::BinParser::parseRemainder;
-//%ignore urcl::comm::BinParser::rawData;
-//%include "ur_client_library/comm/bin_parser.h"
+%ignore urcl::comm::BinParser::parse;
+%ignore urcl::comm::BinParser::parseRemainder;
+%ignore urcl::comm::BinParser::rawData;
+%include "ur_client_library/comm/bin_parser.h"
 
 //%template(PrimaryPackageParser) urcl::comm::Parser<urcl::primary_interface::PrimaryPackage>;
 //%import "ur_client_library/primary/primary_parser.h"
@@ -205,10 +214,6 @@ using namespace urcl::primary_interface;
 //%import "ur_client_library/primary/robot_message/version_message.h"
 
 %import "ur_client_library/ur/datatypes.h"
-
-//Can't wrap 'operator <<' unless renamed to a valid identifier.
-//%warnfilter(503) urcl::VersionInformation;
-//%import "ur_client_library/ur/version_information.h"
 
 //%import "ur_client_library/ur/tool_communication.h"
 //%import "ur_client_library/ur/calibration_checker.h"
@@ -261,6 +266,11 @@ using namespace urcl::primary_interface;
     }
 }
 
+//Can't wrap 'operator <<' unless renamed to a valid identifier.
+%warnfilter(503) urcl::VersionInformation;
+%include "ur_client_library/ur/version_information.h"
+
+
 //%warnfilter(401) urcl;
 //%warnfilter(516) urcl::UrException;
 //%include "ur_client_library/exceptions.h"
@@ -287,7 +297,32 @@ using namespace urcl::primary_interface;
 
 %include "ur_client_library/rtde/control_package_start.h"
 %include "ur_client_library/rtde/control_package_setup_outputs.h"
+
 %include "ur_client_library/rtde/data_package.h"
+%define %getSetDataTemplate(TYPE)
+%template(getData_ ## TYPE) urcl::rtde_interface::DataPackage::getData<TYPE>;
+%template(setData_ ## TYPE) urcl::rtde_interface::DataPackage::getData<TYPE>;
+%enddef
+
+%getSetDataTemplate(bool)
+%getSetDataTemplate(uint8_t)
+%getSetDataTemplate(uint32_t)
+%template(getData_uint64_t) urcl::rtde_interface::DataPackage::getData<long unsigned int>;
+%template(setData_uint64_t) urcl::rtde_interface::DataPackage::setData<long unsigned int>;
+%getSetDataTemplate(int32_t)
+%getSetDataTemplate(double)
+%getSetDataTemplate(vector3d_t)
+%getSetDataTemplate(vector6d_t)
+%getSetDataTemplate(vector6int32_t)
+%getSetDataTemplate(vector6uint32_t)
+%template(getData_std_string) urcl::rtde_interface::DataPackage::getData<std::string>;
+%template(setData_std_string) urcl::rtde_interface::DataPackage::setData<std::string>;
+
+// From types.h
+%template(vector3double) std::array<double, 3>;
+%template(vector6double) std::array<double, 6>;
+%template(vector6int32) std::array<int32_t, 6>;
+%template(vector6uint32) std::array<uint32_t, 6>;
 ///////////////////////////
 // End Includes
 

@@ -28,14 +28,12 @@
 %inline %{
     class NAME {
     public:
-    /*
-     * No NAME(TYPE value) constructor given because
-     * temporary arguments make no sense in the
-     * intended use cases.
-    */
-    NAME() : valuePtr(std::make_unique<TYPE>(0)) {
+    NAME() : valuePtr(std::make_unique<TYPE>()) {
     }
-    
+
+    NAME(const TYPE & value) : valuePtr(std::make_unique<TYPE>(value)) {
+    }
+
     void setValue(TYPE value) {
         *valuePtr = value;
     }

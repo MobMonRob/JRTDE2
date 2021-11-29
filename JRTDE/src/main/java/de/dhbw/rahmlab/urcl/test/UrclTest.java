@@ -5,10 +5,10 @@
  */
 package de.dhbw.rahmlab.urcl.test;
 
+import de.dhbw.rahmlab.urcl.impl.std.StringVector;
 import de.dhbw.rahmlab.urcl.impl.urcl.comm.Notifier;
 import de.dhbw.rahmlab.urcl.impl.urcl.rtde_interface.DataPackage;
 import de.dhbw.rahmlab.urcl.impl.urcl.rtde_interface.RTDEClient;
-import de.dhbw.rahmlab.urcl.impl.urclSwig;
 
 /**
  *
@@ -18,6 +18,8 @@ public class UrclTest {
 
     public static void main(String argv[]) {
         RTDEClientExample();
+        StringVector sv = new StringVector();
+        DataPackage dp = new DataPackage(sv);
     }
 
     public static void RTDEClientExample() {
@@ -52,7 +54,7 @@ public class UrclTest {
         // otherwise we will get pipeline overflows. Therefor, do this directly before starting your main
         // loop.
         boolean started = myClient.start();
-        if (!inited) {
+        if (!started) {
             System.out.println("start failed");
             return;
         }
