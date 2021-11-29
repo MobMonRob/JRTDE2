@@ -5,7 +5,7 @@
  */
 package de.dhbw.rahmlab.urcl.test;
 
-import de.dhbw.rahmlab.urcl.impl.urcl.comm.INotifier;
+import de.dhbw.rahmlab.urcl.impl.urcl.comm.Notifier;
 import de.dhbw.rahmlab.urcl.impl.urcl.rtde_interface.DataPackage;
 import de.dhbw.rahmlab.urcl.impl.urcl.rtde_interface.RTDEClient;
 import de.dhbw.rahmlab.urcl.impl.urclSwig;
@@ -33,9 +33,8 @@ public class UrclTest {
         final String INPUT_RECIPE_PATH = "/home/fabian/Desktop/_tmp/rtde_input_recipe.txt";
         final long READ_TIMEOUT_MILLISECONDS = 100;
 
-        // Es könnte sein, dass man hiervon erben soll in Java.
-        // Dann bräuchte man dafür noch SWIG directors.
-        INotifier notifier = new INotifier();
+        // Dummy Notifier. Inherit from it use correctly.
+        Notifier notifier = new Notifier();
         RTDEClient myClient = new RTDEClient(ROBOT_IP, notifier, OUTPUT_RECIPE_PATH, INPUT_RECIPE_PATH);
 
         // Man muss auf eine Exception hier relativ lange warten wegen des langen Timeouts des TCP_Clients.
