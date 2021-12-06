@@ -1,56 +1,7 @@
 %module(directors="1") urclSwig;
 //Wichtig: Modul muss anders heissen, als die Namespaces! Sonst gibt es den Namen als Klasse (wegen dem Modul) und als Namespace. Das gibt Probleme.
 
-%feature("nspace");
-//Muss unbedingt vor den Template Instanzierungen stehen, damit die zugreifbar bleiben.
-//Refer to end of section of http://www.swig.org/Doc4.0/Java.html#Java_code_typemaps
-//Nur notwendig, wenn nspace Feature aktiv
-SWIG_JAVABODY_PROXY(public, public, SWIGTYPE)
-SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
-SWIG_JAVABODY_METHODS(public, public, SWIGTYPE)
-
-//Make get_Cptr public
-//#define SWIG_SHARED_PTR_TYPEMAPS(CONST, TYPE...) SWIG_SHARED_PTR_TYPEMAPS_IMPLEMENTATION(public, public, CONST, TYPE)
-%include <std_shared_ptr.i>
-//Important: http://www.swig.org/Doc4.0/Library.html#Library_std_shared_ptr
-
-%include "stdint.i"
-
-%include "std_string.i";
-%include "arrays_java.i";
-%include "std_common.i"
-%include "java.swg"
-%include "std_array.i"
-
-%include "std_unique_ptr.i"
-%include "std_vector_unique_ptr.i"
-%include "std_chrono.i"
-%include "urcl_log.i"
-%include "primitive_type_ptr.i"
-
-//Interface cannot be instantiated
-%include <swiginterface.i>
-
-//Fixes [...]SwigJNI class to invoke NativeLibLoader
-%pragma(java) jniclassimports=%{
-import de.dhbw.rahmlab.urcl.nativelib.NativeLibLoader;
-%}
-
-%pragma(java) jniclasscode=%{
-static {
-	NativeLibLoader.load();
-}
-%}
-
-// Import in all Proxy Classes.
-// Um trotz "nspace" herauszufinden, wo die "SWIGTYPE_p_[...]" Stummel Proxy Klassen benutzt werden via netbeans "find usages".
-%typemap(javaimports) SWIGTYPE
-%{
-import de.dhbw.rahmlab.urcl.impl.*;
-%}
-
-//Unknown Doxygen command
-#pragma SWIG nowarn=560
+%include "_common.i"
 
 #define __WORDSIZE 64
 %import "/usr/include/x86_64-linux-gnu/bits/typesizes.h";
@@ -59,18 +10,7 @@ import de.dhbw.rahmlab.urcl.impl.*;
 %include "/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h";
 #undef __WORDSIZE
 
-
-%template (StringVector) std::vector<std::string>;
-
 %primitive_type_ptr(size_t, SizeTContainer)
-%primitive_type_ptr(bool, BoolContainer)
-%primitive_type_ptr(double, DoubleContainer)
-%primitive_type_ptr(int, IntContainer)
-%primitive_type_ptr(unsigned char, UCharContainer)
-%primitive_type_ptr(unsigned int, UIntContainer)
-%primitive_type_ptr(unsigned long, ULongContainer)
-%primitive_type_ptr(std::string, StdStringContainer)
-
 
 %{
 //Includes the header files in the wrapper code
@@ -98,7 +38,6 @@ import de.dhbw.rahmlab.urcl.impl.*;
 #include "ur_client_library/rtde/control_package_start.h"
 #include "ur_client_library/rtde/control_package_setup_outputs.h"
 #include "ur_client_library/rtde/rtde_writer.h"
-#include "ur_client_library/rtde/data_package.h"
 #include "ur_client_library/default_log_handler.h"
 #include "ur_client_library/log.h"
 #include "ur_client_library/types.h"
@@ -297,32 +236,9 @@ using namespace urcl::primary_interface;
 
 %include "ur_client_library/rtde/control_package_start.h"
 %include "ur_client_library/rtde/control_package_setup_outputs.h"
-
-%include "ur_client_library/rtde/data_package.h"
-%define %getSetDataTemplate(TYPE)
-%template(getData_ ## TYPE) urcl::rtde_interface::DataPackage::getData<TYPE>;
-%template(setData_ ## TYPE) urcl::rtde_interface::DataPackage::getData<TYPE>;
-%enddef
-
-%getSetDataTemplate(bool)
-%getSetDataTemplate(uint8_t)
-%getSetDataTemplate(uint32_t)
-%template(getData_uint64_t) urcl::rtde_interface::DataPackage::getData<long unsigned int>;
-%template(setData_uint64_t) urcl::rtde_interface::DataPackage::setData<long unsigned int>;
-%getSetDataTemplate(int32_t)
-%getSetDataTemplate(double)
-%getSetDataTemplate(vector3d_t)
-%getSetDataTemplate(vector6d_t)
-%getSetDataTemplate(vector6int32_t)
-%getSetDataTemplate(vector6uint32_t)
-%template(getData_std_string) urcl::rtde_interface::DataPackage::getData<std::string>;
-%template(setData_std_string) urcl::rtde_interface::DataPackage::setData<std::string>;
-
-// From types.h
-%template(vector3double) std::array<double, 3>;
-%template(vector6double) std::array<double, 6>;
-%template(vector6int32) std::array<int32_t, 6>;
-%template(vector6uint32) std::array<uint32_t, 6>;
 ///////////////////////////
 // End Includes
+
+
+%import "urcl_data_package.i"
 

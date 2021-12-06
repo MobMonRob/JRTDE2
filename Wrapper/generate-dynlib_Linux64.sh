@@ -13,16 +13,31 @@ run() {
 	local -r wrapLibInclude="$wrapLibTarget/include"
 	local -r wrapLibBinary="$wrapLibTarget/lib"
 
+	local -r SwigCppArray=($(find "$linuxTmp"/*.cpp -maxdepth 0 -mindepth 0 -type f -printf '%f\n'))
+
+	#exit 0
+
+	for swigCpp in ${SwigCppArray[@]}
+	do
+		echo "->$swigCpp"
+
 	#-flto
 	#-c für nicht linken (nur .o erzeugen)
 	#-shared .so muss tun, damit sicher der Fehler nicht hier liegt.
-	g++ -c -fPIC -O3 -cpp -std=c++17 "$linuxTmp/"$wrapLibName"_wrap.cpp" \
+	g++ -c -fPIC -O3 -cpp -std=c++17 "$linuxTmp/$swigCpp" \
 	-I"$javaIncludeLinux/linux" -I"$javaIncludeLinux" -I"$wrapLibInclude" \
-	-o "$linuxTmp/lib"$wrapLibName"_wrap.o"
+	-o "$linuxTmp/$swigCpp.o"
+	done
+
+	local -r oArray=(${SwigCppArray[@]/%/.o})
+	local -r pathArray=(${oArray[@]/#/$linuxTmp/})
 
 	#-flto
-	g++ -shared "$linuxTmp/lib"$wrapLibName"_wrap.o" -L"$wrapLibBinary" \
+	g++ -shared -L"$wrapLibBinary" \
+	-Wl,--start-group \
+	${pathArray[@]} \
 	-lurcl -lpthread \
+	-Wl,--end-group \
 	-Wl,-rpath,'$ORIGIN/.' -o "$linuxTarget/libJ"$wrapLibName".so" \
 	-Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
 }

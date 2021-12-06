@@ -1,5 +1,7 @@
 %module(directors="1") urclLog;
 
+%include "_common.i"
+
 %ignore urcl::registerLogHandler(std::unique_ptr<LogHandler> loghandler);
 %feature("director") urcl::LogHandler;
 %include "ur_client_library/log.h"
@@ -29,7 +31,7 @@ urcl::LogHandler* logHandler_ptr;
     #include "ur_client_library/log.h"
 
     namespace urcl {
-    
+
     /*!
     * \brief Register a new LogHandler object, for handling log messages.
     *

@@ -6,7 +6,7 @@
 package de.dhbw.rahmlab.urcl.test;
 
 import de.dhbw.rahmlab.urcl.impl.urcl.LogLevel;
-import de.dhbw.rahmlab.urcl.impl.urclSwig;
+import de.dhbw.rahmlab.urcl.impl.urclLog;
 
 /**
  *
@@ -25,8 +25,8 @@ public class LogHandler extends de.dhbw.rahmlab.urcl.impl.urcl.LogHandler {
      * Needed. Use only once.
      */
     public void register() {
-        urclSwig.setLogLevel(LogLevel.DEBUG);
-        urclSwig.registerTheLogHandler(this);
+        urclLog.setLogLevel(LogLevel.DEBUG);
+        urclLog.registerTheLogHandler(this);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class LogHandler extends de.dhbw.rahmlab.urcl.impl.urcl.LogHandler {
 
     @Override
     public synchronized void delete() {
-        urclSwig.unregisterLogHandler();
+        urclLog.unregisterLogHandler();
         super.delete();
     }
 }

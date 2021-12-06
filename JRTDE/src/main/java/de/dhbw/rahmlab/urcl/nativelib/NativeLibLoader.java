@@ -1,7 +1,5 @@
 package de.dhbw.rahmlab.urcl.nativelib;
 
-import de.dhbw.rahmlab.urcl.impl.urclSwigJNI;
-
 /**
  * @author fabian
  */
@@ -20,7 +18,7 @@ public class NativeLibLoader {
         try {
             de.dhbw.rahmlab.nativelibloader.api.NativeLibLoader.init(true);
             de.dhbw.rahmlab.nativelibloader.api.NativeLibLoader nativeLibLoader = de.dhbw.rahmlab.nativelibloader.api.NativeLibLoader.getInstance();
-            nativeLibLoader.load(urclSwigJNI.class);
+            nativeLibLoader.load(NativeLibLoader.class);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
