@@ -95,7 +95,7 @@ import de.dhbw.rahmlab.urcl.impl.*;
 
 %define %getSetDataTemplateNS(NAMESPACE, TYPE)
 %template(getData_ ## TYPE) urcl::rtde_interface::DataPackage::getData<NAMESPACE ## TYPE>;
-%template(setData_ ## TYPE) urcl::rtde_interface::DataPackage::getData<NAMESPACE ## TYPE>;
+%template(setData_ ## TYPE) urcl::rtde_interface::DataPackage::setData<NAMESPACE ## TYPE>;
 %enddef
 
 %define %getSetDataTemplate(TYPE)
