@@ -15,8 +15,6 @@ run() {
 
 	local -r SwigCppArray=($(find "$linuxTmp"/*.cpp -maxdepth 0 -mindepth 0 -type f -printf '%f\n'))
 
-	#exit 0
-
 	for swigCpp in ${SwigCppArray[@]}
 	do
 		echo "->$swigCpp"
