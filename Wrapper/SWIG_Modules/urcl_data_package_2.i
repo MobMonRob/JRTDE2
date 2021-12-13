@@ -1,7 +1,8 @@
 %module urclDataPackage2;
 
 %include "_common.i"
-%include "std_optional.i"
+%include "std_optional_typemaps.i"
+//%include "std_optional.i"
 
 %{
 	//std::move
@@ -24,21 +25,33 @@
 
 %include "ur_client_library/rtde/data_package.h"
 
-%define %getSetData(NAMESPACE, TYPE)
 
-%StdOptional(NAMESPACE, TYPE);
+//Apparently not needed anymore
+%StdOptional_typemaps( ,bool)
+//%StdOptional_typemaps( ,uint8_t)
+//%StdOptional_typemaps( ,uint32_t)
+//%StdOptional_typemaps( ,uint64_t)
+//%StdOptional_typemaps( ,int32_t)
+//%StdOptional_typemaps( ,double)
+//%StdOptional_typemaps(urcl::, vector3d_t)
+//%StdOptional_typemaps(urcl::, vector6d_t)
+//%StdOptional_typemaps(urcl::, vector6int32_t)
+//%StdOptional_typemaps(urcl::, vector6uint32_t)
+%StdOptional_typemaps(std::, string)
 
-%template(getData_ ## TYPE) urcl::rtde_interface::DataPackage::getData2<NAMESPACE TYPE>;
-%template(setData_ ## TYPE) urcl::rtde_interface::DataPackage::setData2<NAMESPACE TYPE>;
-
-%enddef
-
+//SWIG Bug! Typemaps are not used for Templates inside %extend
+//->Dokumentieren!
 //Definition
-%extend urcl::rtde_interface::DataPackage {
+//%extend urcl::rtde_interface::DataPackage {
+%inline %{
+	namespace urcl::rtde_interface {
+		class DataPackage;
+	}
+
 	template <typename T>
-	std::optional<T> getData2(const std::string& name) {
+	std::optional<T> getData2(urcl::rtde_interface::DataPackage * self, const std::string& name) {
 		T value;
-		bool success = $self->getData(name, value);
+		bool success = self->getData(name, value);
 		if (success) {
 			return std::optional<T>(std::move(value));
 		}
@@ -49,10 +62,33 @@
 	// in data_package.h
 	// But will be copied
 	template <typename T>
-	bool setData2(const std::string& name, const T & val) {
-		return $self->setData(name, val);
+	bool setData2(urcl::rtde_interface::DataPackage * self, const std::string& name, const T & val) {
+		return self->setData(name, val);
 	}
+%}
+//};
+
+
+%define %getSetData(NAMESPACE, TYPE)
+
+%template(getData2_ ## TYPE) getData2<NAMESPACE TYPE>;
+%template(setData2_ ## TYPE) setData2<NAMESPACE TYPE>;
+
+%extend urcl::rtde_interface::DataPackage {
+	#if defined(SWIG)
+	%proxycode %{
+		public java.util.Optional<java.util.Optional<$typemap(jboxtype, TYPE)>> getData_ ## TYPE($typemap(jstype, const std::string&) name) {
+			return getData2_ ## TYPE(this, name);
+		}
+
+		public bool setData_ ## TYPE($typemap(jstype, const std::string&) name, $typemap(jstype, const NAMESPACE TYPE &) val) {
+			return setData2_ ## TYPE(this, name, val);
+		}
+	%}
+	#endif
 };
+
+%enddef
 
 %getSetData( ,bool)
 //%getSetData( ,uint8_t)
