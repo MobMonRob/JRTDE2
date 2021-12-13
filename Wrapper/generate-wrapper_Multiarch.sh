@@ -22,6 +22,10 @@ run() {
 
 	for swigModule in ${SwigModulesArray[@]}
 	do
+		if [[ $swigModule != "urcl_data_package_2.i" ]]; then
+			continue
+		fi
+
 		echo "->$swigModule"
 
 		#-debug-tmsearch

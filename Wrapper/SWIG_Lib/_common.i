@@ -11,7 +11,10 @@ SWIG_JAVABODY_METHODS(public, public, SWIGTYPE)
 %include <std_shared_ptr.i>
 //Important: http://www.swig.org/Doc4.0/Library.html#Library_std_shared_ptr
 
+//Don't include them here. They are not generic!
+
 // SWIG lib .i fles
+/*
 %include "stdint.i"
 %include "std_string.i";
 %include "arrays_java.i";
@@ -19,12 +22,15 @@ SWIG_JAVABODY_METHODS(public, public, SWIGTYPE)
 %include "java.swg"
 %include "std_array.i"
 %include <swiginterface.i>
+*/
 
 // Own generic .i files
+/*
 %include "primitive_type_ptr.i"
 %include "std_chrono.i"
 %include "std_unique_ptr.i"
 %include "std_vector_unique_ptr.i"
+*/
 
 //Fixes [...]SwigJNI class to invoke NativeLibLoader
 %pragma(java) jniclassimports=%{
