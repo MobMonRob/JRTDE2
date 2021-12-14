@@ -29,7 +29,7 @@ run() {
 		echo "->$swigModule"
 
 		#-debug-tmused -debug-tmsearch -debug-typemap
-		swig -debug-tmused -debug-tmsearch -debug-typemap -doxygen -Wextra -cpperraswarn -DSWIGWORDSIZE64 -c++ -java -package "de.dhbw.rahmlab."$wrapLibName".impl" -outdir "$swigJavaOutDir" -o "$currentTmp/"$swigModule"_wrap.cpp" -I"$wrapLibInclude" -I"$swigLibDirectory" "$swigModulesDirectory/$swigModule"
+		swig -doxygen -Wextra -cpperraswarn -DSWIGWORDSIZE64 -c++ -java -package "de.dhbw.rahmlab."$wrapLibName".impl" -outdir "$swigJavaOutDir" -o "$currentTmp/"$swigModule"_wrap.cpp" -I"$wrapLibInclude" -I"$swigLibDirectory" "$swigModulesDirectory/$swigModule"
 	done
 }
 

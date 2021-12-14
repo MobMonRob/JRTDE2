@@ -1,8 +1,11 @@
 %module urclDataPackage2;
 
+// Own generic .i files
 %include "_common.i"
-//%include "std_optional_typemaps.i"
 %include "std_optional.i"
+
+// SWIG lib .i fles
+%include "std_string.i";
 
 %{
 	//std::move
@@ -24,21 +27,6 @@
 //%import "ur_client_library/rtde/rtde_package.h"
 
 %include "ur_client_library/rtde/data_package.h"
-
-/*
-//Apparently not needed anymore
-%StdOptional_typemaps( ,bool)
-//%StdOptional_typemaps( ,uint8_t)
-//%StdOptional_typemaps( ,uint32_t)
-//%StdOptional_typemaps( ,uint64_t)
-//%StdOptional_typemaps( ,int32_t)
-//%StdOptional_typemaps( ,double)
-//%StdOptional_typemaps(urcl::, vector3d_t)
-//%StdOptional_typemaps(urcl::, vector6d_t)
-//%StdOptional_typemaps(urcl::, vector6int32_t)
-//%StdOptional_typemaps(urcl::, vector6uint32_t)
-%StdOptional_typemaps(std::, string)
-*/
 
 //SWIG Bug! Typemaps are not used for Templates inside %extend
 //->Dokumentieren!
@@ -69,7 +57,6 @@
 %}
 //};
 
-
 %define %getSetData(NAMESPACE, TYPE)
 
 %StdOptional(NAMESPACE, TYPE)
@@ -80,11 +67,11 @@
 %extend urcl::rtde_interface::DataPackage {
 	#if defined(SWIG)
 	%proxycode %{
-		public java.util.Optional<$typemap(jboxtype, TYPE)> getData_ ## TYPE($typemap(jstype, const std::string&) name) {
+		public java.util.Optional<$typemap(jboxtype, NAMESPACE TYPE)> getData_ ## TYPE($typemap(jstype, const std::string&) name) {
 			return getData2_ ## TYPE(this, name);
 		}
 
-		public bool setData_ ## TYPE($typemap(jstype, const std::string&) name, $typemap(jstype, const NAMESPACE TYPE &) val) {
+		public boolean setData_ ## TYPE($typemap(jstype, const std::string&) name, $typemap(jstype, const NAMESPACE TYPE &) val) {
 			return setData2_ ## TYPE(this, name, val);
 		}
 	%}

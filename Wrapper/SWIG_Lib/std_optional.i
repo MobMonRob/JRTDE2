@@ -7,14 +7,6 @@
 
 %define %StdOptional(NAMESPACE, TYPE)
 
-//Needs to be before %template
-%typemap(in) NAMESPACE TYPE std::optional::optional (NAMESPACE TYPE tmp)
-%{
-	tmp = $input;
-	$1 = tmp;
-%}
-
-
 %template(Optional_ ## TYPE) std::optional<NAMESPACE TYPE>;
 
 //They shall not apply to std:optional.

@@ -13,6 +13,14 @@ SWIG_JAVABODY_METHODS(public, public, SWIGTYPE)
 
 //Don't include them here. They are not generic!
 
+// Own generic .i files
+/*
+%include "primitive_type_ptr.i"
+%include "std_chrono.i"
+%include "std_unique_ptr.i"
+%include "std_vector_unique_ptr.i"
+*/
+
 // SWIG lib .i fles
 /*
 %include "stdint.i"
@@ -22,14 +30,6 @@ SWIG_JAVABODY_METHODS(public, public, SWIGTYPE)
 %include "java.swg"
 %include "std_array.i"
 %include <swiginterface.i>
-*/
-
-// Own generic .i files
-/*
-%include "primitive_type_ptr.i"
-%include "std_chrono.i"
-%include "std_unique_ptr.i"
-%include "std_vector_unique_ptr.i"
 */
 
 //Fixes [...]SwigJNI class to invoke NativeLibLoader
@@ -48,6 +48,7 @@ static {
 %typemap(javaimports) SWIGTYPE
 %{
 import de.dhbw.rahmlab.urcl.impl.*;
+import static de.dhbw.rahmlab.urcl.impl.$module.*;
 %}
 
 //Unknown Doxygen command
