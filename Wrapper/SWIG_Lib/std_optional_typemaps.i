@@ -1,3 +1,8 @@
+%{
+	//std::move
+	#include <utility>
+%}
+
 %define %StdOptional_typemaps(NAMESPACE, TYPE)
 //////////////////////////////
 
@@ -14,7 +19,7 @@
 %typemap(out) std::optional<NAMESPACE TYPE >
 %{
 	//typout
-	*($1_type*)& $result = $1;
+	*($1_type**)& $result = new $1_type(std::move($1));
 %}
 
 // Name of Java (Proxy) classes
@@ -25,7 +30,7 @@
 {
 	long cPtr = $jnicall;
 	if (cPtr == 0) return java.util.Optional.empty();
-	$javaclassname theOpt = new $javaclassname(swigCPtr, true);
+	$javaclassname theOpt = new $javaclassname(cPtr, true);
 	return theOpt.toJavaOptional();
 }
 %}
@@ -45,18 +50,24 @@
 %typemap(jni) std::optional<NAMESPACE TYPE> & = std::optional<NAMESPACE TYPE>;
 
 
-%typemap(out) std::optional<NAMESPACE TYPE> * = std::optional<NAMESPACE TYPE>;
+%typemap(out) std::optional<NAMESPACE TYPE> *
+%{
+#error
+%}
+//Hier auch evtl. Fehler.
 %typemap(jstype) std::optional<NAMESPACE TYPE> * = std::optional<NAMESPACE TYPE>;
-//Evtl. böse
 %typemap(javaout) std::optional<NAMESPACE TYPE> * = std::optional<NAMESPACE TYPE>;
 %typemap(jtype) std::optional<NAMESPACE TYPE> * = std::optional<NAMESPACE TYPE>;
 %typemap(jni) std::optional<NAMESPACE TYPE> * = std::optional<NAMESPACE TYPE>;
 
+
 //////////////////////////////
 %enddef
 
+/*
 //SWIG Definition
 namespace std {
 	template <typename T> class optional {};
 }
+*/
 

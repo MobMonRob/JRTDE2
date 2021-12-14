@@ -1,8 +1,8 @@
 %module urclDataPackage2;
 
 %include "_common.i"
-%include "std_optional_typemaps.i"
-//%include "std_optional.i"
+//%include "std_optional_typemaps.i"
+%include "std_optional.i"
 
 %{
 	//std::move
@@ -25,7 +25,7 @@
 
 %include "ur_client_library/rtde/data_package.h"
 
-
+/*
 //Apparently not needed anymore
 %StdOptional_typemaps( ,bool)
 //%StdOptional_typemaps( ,uint8_t)
@@ -38,6 +38,7 @@
 //%StdOptional_typemaps(urcl::, vector6int32_t)
 //%StdOptional_typemaps(urcl::, vector6uint32_t)
 %StdOptional_typemaps(std::, string)
+*/
 
 //SWIG Bug! Typemaps are not used for Templates inside %extend
 //->Dokumentieren!
@@ -71,13 +72,15 @@
 
 %define %getSetData(NAMESPACE, TYPE)
 
+%StdOptional(NAMESPACE, TYPE)
+
 %template(getData2_ ## TYPE) getData2<NAMESPACE TYPE>;
 %template(setData2_ ## TYPE) setData2<NAMESPACE TYPE>;
 
 %extend urcl::rtde_interface::DataPackage {
 	#if defined(SWIG)
 	%proxycode %{
-		public java.util.Optional<java.util.Optional<$typemap(jboxtype, TYPE)>> getData_ ## TYPE($typemap(jstype, const std::string&) name) {
+		public java.util.Optional<$typemap(jboxtype, TYPE)> getData_ ## TYPE($typemap(jstype, const std::string&) name) {
 			return getData2_ ## TYPE(this, name);
 		}
 

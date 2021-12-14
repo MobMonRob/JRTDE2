@@ -7,8 +7,19 @@
 
 %define %StdOptional(NAMESPACE, TYPE)
 
-%StdOptional_typemaps(NAMESPACE, TYPE)
+//Needs to be before %template
+%typemap(in) NAMESPACE TYPE std::optional::optional (NAMESPACE TYPE tmp)
+%{
+	tmp = $input;
+	$1 = tmp;
+%}
+
+
 %template(Optional_ ## TYPE) std::optional<NAMESPACE TYPE>;
+
+//They shall not apply to std:optional.
+//Therefore after %template
+%StdOptional_typemaps(NAMESPACE, TYPE)
 
 %enddef
 
@@ -18,11 +29,15 @@
 
 %catches(const std::bad_optional_access &) std::optional::value();
 
+
 //SWIG Definition
 namespace std {
 	template <typename T>
 	class optional {
 	public:
+		//Copy will be passed to move constructor
+		optional(T value);
+
 		bool has_value();
 		// Die Rückgabe muss als eine Kopie behandelt werden.
 		// Sonst gibt es use-after-free Gefahr, wenn ein Pointer auf den inneren Wert zurück gegeben wird und in einer anderen Datenstruktur landet in Java.
