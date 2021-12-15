@@ -22,7 +22,7 @@ run() {
 
 	for swigModule in ${SwigModulesArray[@]}
 	do
-		if [[ $swigModule != "urcl_data_package_2.i" ]]; then
+		if [[ $swigModule != "urcl_data_package.i" ]]; then
 			continue
 		fi
 
