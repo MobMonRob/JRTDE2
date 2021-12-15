@@ -1,4 +1,4 @@
-%module urclDataPackage2;
+%module urclDataPackage;
 
 // Own generic .i files
 %include "_common.i"
