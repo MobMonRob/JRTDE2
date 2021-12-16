@@ -65,6 +65,6 @@ using namespace urcl; //For UrException
 ///////////////////////////
 // End Includes
 
-
+//"Submodules"
 %import "urcl.rtde.data_package.i"
-%import "urcl.log.i"
+

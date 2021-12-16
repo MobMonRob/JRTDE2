@@ -18,3 +18,6 @@
 //%warnfilter(516) urcl::UrException;
 //%include "exceptions.h"
 
+//"Submodules"
+%import "urcl.log.i"
+
