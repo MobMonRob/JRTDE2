@@ -6,32 +6,6 @@ SWIG_JAVABODY_PROXY(public, public, SWIGTYPE)
 SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 SWIG_JAVABODY_METHODS(public, public, SWIGTYPE)
 
-//Make get_Cptr public
-//#define SWIG_SHARED_PTR_TYPEMAPS(CONST, TYPE...) SWIG_SHARED_PTR_TYPEMAPS_IMPLEMENTATION(public, public, CONST, TYPE)
-%include <std_shared_ptr.i>
-//Important: http://www.swig.org/Doc4.0/Library.html#Library_std_shared_ptr
-
-//Don't include them here. They are not generic!
-
-// Own generic .i files
-/*
-%include "primitive_type_ptr.i"
-%include "std_chrono.i"
-%include "std_unique_ptr.i"
-%include "std_vector_unique_ptr.i"
-*/
-
-// SWIG lib .i fles
-/*
-%include "stdint.i"
-%include "std_string.i";
-%include "arrays_java.i";
-%include "std_common.i"
-%include "java.swg"
-%include "std_array.i"
-%include <swiginterface.i>
-*/
-
 //Fixes [...]SwigJNI class to invoke NativeLibLoader
 %pragma(java) jniclassimports=%{
 import de.dhbw.rahmlab.urcl.nativelib.NativeLibLoader;

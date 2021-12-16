@@ -1,13 +1,13 @@
-%module(directors="1") urclLog;
+%module(directors="1") urcl__log;
 
 %include "_common.i"
 
 %ignore urcl::registerLogHandler(std::unique_ptr<LogHandler> loghandler);
 %feature("director") urcl::LogHandler;
-%include "ur_client_library/log.h"
+%include "log.h"
 
 %{
-#include "ur_client_library/log.h"
+#include "log.h"
 
 namespace urcl
 {
@@ -28,7 +28,7 @@ urcl::LogHandler* logHandler_ptr;
 %}
 
 %inline %{
-    #include "ur_client_library/log.h"
+    #include "log.h"
 
     namespace urcl {
 
@@ -44,5 +44,5 @@ urcl::LogHandler* logHandler_ptr;
 %}
 
 //Not needed
-//%include "ur_client_library/default_log_handler.h"
+//%include "default_log_handler.h"
 

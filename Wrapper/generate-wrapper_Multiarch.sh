@@ -10,7 +10,7 @@ run() {
 	local -r swigJavaOutDir="$currentTarget/java/de/dhbw/rahmlab/"$wrapLibName"/impl"
 
 	local -r wrapLibTarget="$wrapLibDir/$currentTarget"
-	local -r wrapLibInclude="$wrapLibTarget/include"
+	local -r wrapLibInclude="$wrapLibTarget/include/ur_client_library"
 
 	mkdir -p "$swigJavaOutDir"
 	mkdir -p "$currentTmp"
@@ -20,10 +20,18 @@ run() {
 
 	local -r SwigModulesArray=($(find "$swigModulesDirectory"/* -maxdepth 0 -mindepth 0 -type f -printf '%f\n'))
 
+	#local -r moduleOfInterest="urcl_data_package.i"
+	#local -r moduleOfInterest="urcl_log.i"
+	local -r moduleOfInterest="PlatformIndependent.i"
+
+	local -r filterModule="false"
+
 	for swigModule in ${SwigModulesArray[@]}
 	do
-		if [[ $swigModule != "urcl_data_package.i" ]]; then
-			continue
+		if [[ $filterModule == "true" ]]; then
+			if [[ $swigModule != $moduleOfInterest ]]; then
+				continue
+			fi
 		fi
 
 		echo "->$swigModule"

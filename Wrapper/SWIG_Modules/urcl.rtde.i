@@ -1,7 +1,26 @@
-%module(directors="1") urclSwig;
+%module(directors="1") urcl__rtde;
 //Wichtig: Modul muss anders heissen, als die Namespaces! Sonst gibt es den Namen als Klasse (wegen dem Modul) und als Namespace. Das gibt Probleme.
 
 %include "_common.i"
+
+// Own generic .i files
+%include "primitive_type_ptr.i"
+%include "std_chrono.i"
+%include "std_unique_ptr.i"
+%include "std_vector_unique_ptr.i"
+
+// SWIG lib .i fles
+%include "stdint.i"
+%include "std_string.i";
+%include "arrays_java.i";
+%include "std_common.i"
+%include "java.swg"
+%include "std_array.i"
+%include <swiginterface.i>
+//Make get_Cptr public
+//#define SWIG_SHARED_PTR_TYPEMAPS(CONST, TYPE...) SWIG_SHARED_PTR_TYPEMAPS_IMPLEMENTATION(public, public, CONST, TYPE)
+%include <std_shared_ptr.i>
+//Important: http://www.swig.org/Doc4.0/Library.html#Library_std_shared_ptr
 
 #define __WORDSIZE 64
 %import "/usr/include/x86_64-linux-gnu/bits/typesizes.h";
@@ -12,54 +31,54 @@
 
 %primitive_type_ptr(size_t, SizeTContainer)
 
+%template (VectorString) std::vector<std::string>;
+
 %{
 //Includes the header files in the wrapper code
-#include "ur_client_library/control/reverse_interface.h"
-#include "ur_client_library/control/script_sender.h"
-#include "ur_client_library/control/trajectory_point_interface.h"
-#include "ur_client_library/exceptions.h"
-#include "ur_client_library/ur/datatypes.h"
-#include "ur_client_library/ur/version_information.h"
-#include "ur_client_library/ur/tool_communication.h"
-#include "ur_client_library/ur/calibration_checker.h"
-#include "ur_client_library/ur/dashboard_client.h"
-#include "ur_client_library/ur/ur_driver.h"
-#include "ur_client_library/queue/readerwriterqueue.h"
-#include "ur_client_library/queue/atomicops.h"
-#include "ur_client_library/rtde/package_header.h"
-#include "ur_client_library/rtde/request_protocol_version.h"
-#include "ur_client_library/rtde/control_package_setup_inputs.h"
-#include "ur_client_library/rtde/rtde_package.h"
-#include "ur_client_library/rtde/control_package_pause.h"
-#include "ur_client_library/rtde/get_urcontrol_version.h"
-#include "ur_client_library/rtde/text_message.h"
-#include "ur_client_library/rtde/rtde_client.h"
-#include "ur_client_library/rtde/rtde_parser.h"
-#include "ur_client_library/rtde/control_package_start.h"
-#include "ur_client_library/rtde/control_package_setup_outputs.h"
-#include "ur_client_library/rtde/rtde_writer.h"
-#include "ur_client_library/default_log_handler.h"
-#include "ur_client_library/log.h"
-#include "ur_client_library/types.h"
-#include "ur_client_library/comm/producer.h"
-#include "ur_client_library/comm/package.h"
-#include "ur_client_library/comm/pipeline.h"
-#include "ur_client_library/comm/parser.h"
-#include "ur_client_library/comm/package_serializer.h"
-#include "ur_client_library/comm/stream.h"
-#include "ur_client_library/comm/tcp_server.h"
-#include "ur_client_library/comm/tcp_socket.h"
-#include "ur_client_library/comm/control_mode.h"
-#include "ur_client_library/comm/shell_consumer.h"
-#include "ur_client_library/comm/bin_parser.h"
-#include "ur_client_library/primary/package_header.h"
-#include "ur_client_library/primary/primary_package.h"
-#include "ur_client_library/primary/robot_state.h"
-#include "ur_client_library/primary/robot_state/kinematics_info.h"
-#include "ur_client_library/primary/robot_message.h"
-#include "ur_client_library/primary/abstract_primary_consumer.h"
-#include "ur_client_library/primary/robot_message/version_message.h"
-#include "ur_client_library/primary/primary_parser.h"
+#include "control/reverse_interface.h"
+#include "control/script_sender.h"
+#include "control/trajectory_point_interface.h"
+#include "exceptions.h"
+#include "ur/datatypes.h"
+#include "ur/version_information.h"
+#include "ur/tool_communication.h"
+#include "ur/calibration_checker.h"
+#include "ur/dashboard_client.h"
+#include "ur/ur_driver.h"
+#include "queue/readerwriterqueue.h"
+#include "queue/atomicops.h"
+#include "rtde/package_header.h"
+#include "rtde/request_protocol_version.h"
+#include "rtde/control_package_setup_inputs.h"
+#include "rtde/rtde_package.h"
+#include "rtde/control_package_pause.h"
+#include "rtde/get_urcontrol_version.h"
+#include "rtde/text_message.h"
+#include "rtde/rtde_client.h"
+#include "rtde/rtde_parser.h"
+#include "rtde/control_package_start.h"
+#include "rtde/control_package_setup_outputs.h"
+#include "rtde/rtde_writer.h"
+#include "types.h"
+#include "comm/producer.h"
+#include "comm/package.h"
+#include "comm/pipeline.h"
+#include "comm/parser.h"
+#include "comm/package_serializer.h"
+#include "comm/stream.h"
+#include "comm/tcp_server.h"
+#include "comm/tcp_socket.h"
+#include "comm/control_mode.h"
+#include "comm/shell_consumer.h"
+#include "comm/bin_parser.h"
+#include "primary/package_header.h"
+#include "primary/primary_package.h"
+#include "primary/robot_state.h"
+#include "primary/robot_state/kinematics_info.h"
+#include "primary/robot_message.h"
+#include "primary/abstract_primary_consumer.h"
+#include "primary/robot_message/version_message.h"
+#include "primary/primary_parser.h"
 
 // Dangerous!
 using namespace urcl;
@@ -97,40 +116,40 @@ using namespace urcl::primary_interface;
 //Aber auch, dass der Inhalt in C++ alloziert wird und die neue Größe dann später zugewiesen wird.
 //->Da muss man dann höllisch aufpassen.
 
-//%import "ur_client_library/comm/parser.h"
-//%import "ur_client_library/comm/package_serializer.h"
+//%import "comm/parser.h"
+//%import "comm/package_serializer.h"
 
 %ignore urcl::comm::BinParser::parse;
 %ignore urcl::comm::BinParser::parseRemainder;
 %ignore urcl::comm::BinParser::rawData;
-%include "ur_client_library/comm/bin_parser.h"
+%include "comm/bin_parser.h"
 
 //%template(PrimaryPackageParser) urcl::comm::Parser<urcl::primary_interface::PrimaryPackage>;
-//%import "ur_client_library/primary/primary_parser.h"
+//%import "primary/primary_parser.h"
 
 //%template(RTDEPackageParser) urcl::comm::Parser<urcl::rtde_interface::RTDEPackage>;
 //%std_vector_unique_ptr(RTDEPackageVector, urcl::rtde_interface::RTDEPackage)
-//%include "ur_client_library/rtde/rtde_parser.h"
+//%include "rtde/rtde_parser.h"
 ///////////////////////////
 // End Serialization
 
 
 // Begin Imports
 ///////////////////////////
-%import "ur_client_library/comm/producer.h"
-%import "ur_client_library/comm/package.h"
-%import "ur_client_library/comm/tcp_server.h"
-%import "ur_client_library/comm/stream.h"
-%import "ur_client_library/comm/control_mode.h"
-%import "ur_client_library/comm/shell_consumer.h"
+%import "comm/producer.h"
+%import "comm/package.h"
+%import "comm/tcp_server.h"
+%import "comm/stream.h"
+%import "comm/control_mode.h"
+%import "comm/shell_consumer.h"
 
-%import "ur_client_library/control/reverse_interface.h"
-%import "ur_client_library/control/script_sender.h"
-%import "ur_client_library/control/trajectory_point_interface.h"
+%import "control/reverse_interface.h"
+%import "control/script_sender.h"
+%import "control/trajectory_point_interface.h"
 
-%import "ur_client_library/types.h"
+%import "types.h"
 
-%import "ur_client_library/primary/package_header.h"
+%import "primary/package_header.h"
 
 //%ignore urcl::primary_interface::PrimaryPackage::consumeWith;
 //%shared_ptr(urcl::comm::URPackage<urcl::primary_interface::PackageHeader>)
@@ -140,31 +159,31 @@ using namespace urcl::primary_interface;
 //%shared_ptr(urcl::primary_interface::RobotMessage)
 //%shared_ptr(urcl::primary_interface::VersionMessage)
 //%template(PackageHeaderURPackage) urcl::comm::URPackage<urcl::primary_interface::PackageHeader>;
-//%import "ur_client_library/primary/primary_package.h"
+//%import "primary/primary_package.h"
 
-//%import "ur_client_library/primary/robot_state.h"
-//%import "ur_client_library/primary/robot_state/kinematics_info.h"
-//%import "ur_client_library/primary/robot_message.h"
+//%import "primary/robot_state.h"
+//%import "primary/robot_state/kinematics_info.h"
+//%import "primary/robot_message.h"
 
 //%template(PrimaryPackageConsumer) urcl::comm::IConsumer<urcl::primary_interface::PrimaryPackage>;
-//%import "ur_client_library/primary/abstract_primary_consumer.h"
+//%import "primary/abstract_primary_consumer.h"
 
 //%interface_impl(urcl::primary_interface::AbstractPrimaryConsumer);
-//%import "ur_client_library/primary/robot_message/version_message.h"
+//%import "primary/robot_message/version_message.h"
 
-%import "ur_client_library/ur/datatypes.h"
+%import "ur/datatypes.h"
 
-//%import "ur_client_library/ur/tool_communication.h"
-//%import "ur_client_library/ur/calibration_checker.h"
-//%import "ur_client_library/ur/dashboard_client.h"
+//%import "ur/tool_communication.h"
+//%import "ur/calibration_checker.h"
+//%import "ur/dashboard_client.h"
 
 //%warnfilter(302) urcl::UrDriver;
-//%import "ur_client_library/ur/ur_driver.h"
+//%import "ur/ur_driver.h"
 
 %define AE_GCC
 %define AE_ARCH_X64
-%import "ur_client_library/queue/readerwriterqueue.h"
-%import "ur_client_library/queue/atomicops.h"
+%import "queue/readerwriterqueue.h"
+%import "queue/atomicops.h"
 %enddef
 %enddef
 ///////////////////////////
@@ -173,7 +192,7 @@ using namespace urcl::primary_interface;
 
 // Begin Includes
 ///////////////////////////
-%include "ur_client_library/comm/tcp_socket.h"
+%include "comm/tcp_socket.h"
 
 /*
  * Usage:
@@ -193,7 +212,7 @@ using namespace urcl::primary_interface;
 //But instead: Inherit from Notifier.java.
 //And use INotifier.java to point to it.
 %interface_impl(urcl::comm::INotifier)
-%include "ur_client_library/comm/pipeline.h"
+%include "comm/pipeline.h"
 %feature("director") urcl::comm::Notifier;
 %inline {
     namespace urcl::comm {
@@ -207,38 +226,39 @@ using namespace urcl::primary_interface;
 
 //Can't wrap 'operator <<' unless renamed to a valid identifier.
 %warnfilter(503) urcl::VersionInformation;
-%include "ur_client_library/ur/version_information.h"
+%include "ur/version_information.h"
 
 
 //%warnfilter(401) urcl;
 //%warnfilter(516) urcl::UrException;
-//%include "ur_client_library/exceptions.h"
+//%include "exceptions.h"
 
-%include "ur_client_library/rtde/package_header.h"
+%include "rtde/package_header.h"
 
 %template(RtdePackageHeaderURPackage) urcl::comm::URPackage<urcl::rtde_interface::PackageHeader>;
-%include "ur_client_library/rtde/rtde_package.h"
+%include "rtde/rtde_package.h"
 %template (RTDEPackageURStream) urcl::comm::URStream<urcl::rtde_interface::RTDEPackage>;
 
-%include "ur_client_library/rtde/request_protocol_version.h"
-%include "ur_client_library/rtde/control_package_setup_inputs.h"
-%include "ur_client_library/rtde/control_package_pause.h"
-%include "ur_client_library/rtde/get_urcontrol_version.h"
-%include "ur_client_library/rtde/text_message.h"
+%include "rtde/request_protocol_version.h"
+%include "rtde/control_package_setup_inputs.h"
+%include "rtde/control_package_pause.h"
+%include "rtde/get_urcontrol_version.h"
+%include "rtde/text_message.h"
 
-%include "ur_client_library/rtde/rtde_writer.h"
+%include "rtde/rtde_writer.h"
 
 %unique_ptr(urcl::rtde_interface::DataPackage)
 // Es fehlen noch viele %catches mehr überall im Code!
 %catches(UrException) urcl::rtde_interface::RTDEClient::init;
 %catches(UrException) urcl::rtde_interface::RTDEClient::negotiateProtocolVersion;
-%include "ur_client_library/rtde/rtde_client.h"
+%include "rtde/rtde_client.h"
 
-%include "ur_client_library/rtde/control_package_start.h"
-%include "ur_client_library/rtde/control_package_setup_outputs.h"
+%include "rtde/control_package_start.h"
+%include "rtde/control_package_setup_outputs.h"
 ///////////////////////////
 // End Includes
 
 
-%import "urcl_data_package.i"
+%import "urcl.rtde.data_package.i"
+%import "urcl.log.i"
 

@@ -1,4 +1,4 @@
-%module urclDataPackage;
+%module urcl__rtde__data_package;
 
 // Own generic .i files
 %include "_common.i"
@@ -34,8 +34,8 @@
 	//std::move
 	#include <utility>
 
-	#include "ur_client_library/types.h"
-    #include "ur_client_library/rtde/data_package.h"
+	#include "types.h"
+    #include "rtde/data_package.h"
 %}
 
 ///////////////////////////////////////////////////////////
@@ -47,19 +47,19 @@
 
 ///////////////////////////////////////////////////////////
 
-%include "ur_client_library/types.h"
+%include "types.h"
 
 /*
-%import "ur_client_library/comm/package.h"
+%import "comm/package.h"
 
-%import "ur_client_library/rtde/package_header.h"
+%import "rtde/package_header.h"
 
 %template(RtdePackageHeaderURPackage) urcl::comm::URPackage<urcl::rtde_interface::PackageHeader>;
 
-%import "ur_client_library/rtde/rtde_package.h"
+%import "rtde/rtde_package.h"
 */
 
-%include "ur_client_library/rtde/data_package.h"
+%include "rtde/data_package.h"
 
 ///////////////////////////////////////////////////////////
 

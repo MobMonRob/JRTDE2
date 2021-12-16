@@ -10,7 +10,8 @@ run() {
 	mkdir -p "$linuxTarget"
 
 	local -r wrapLibTarget="$wrapLibDir/$linuxTarget"
-	local -r wrapLibInclude="$wrapLibTarget/include"
+	local -r wrapLibInclude="$wrapLibTarget/include/ur_client_library"
+	local -r libInclude="$wrapLibTarget/include"
 	local -r wrapLibBinary="$wrapLibTarget/lib"
 
 	local -r SwigCppArray=($(find "$linuxTmp"/*.cpp -maxdepth 0 -mindepth 0 -type f -printf '%f\n'))
@@ -23,7 +24,7 @@ run() {
 	#-c für nicht linken (nur .o erzeugen)
 	#-shared .so muss tun, damit sicher der Fehler nicht hier liegt.
 	g++ -c -fPIC -O3 -cpp -std=c++17 "$linuxTmp/$swigCpp" \
-	-I"$javaIncludeLinux/linux" -I"$javaIncludeLinux" -I"$wrapLibInclude" \
+	-I"$javaIncludeLinux/linux" -I"$javaIncludeLinux" -I"$wrapLibInclude" -I"$libInclude" \
 	-o "$linuxTmp/$swigCpp.o"
 	done
 
