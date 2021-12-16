@@ -118,6 +118,7 @@
 
 ///////////////////////////////////////////////////////////
 
+// Defined in "types.h"
 %getSetData( ,bool)
 %getSetData( ,uint8_t)
 %getSetData( ,uint32_t)
