@@ -22,6 +22,13 @@
 %include <std_shared_ptr.i>
 //Important: http://www.swig.org/Doc4.0/Library.html#Library_std_shared_ptr
 
+//Other Modules
+//comm
+%import "urcl.control.i"
+//primary
+//ur
+//->Wenn die Module gegenseitige Abhängigkeiten haben, dann diese nur an der entsprechenden Stelle rein machen. Nicht hier.
+
 #define __WORDSIZE 64
 %import "/usr/include/x86_64-linux-gnu/bits/typesizes.h";
 %import "/usr/include/x86_64-linux-gnu/bits/time64.h";
@@ -35,9 +42,6 @@
 
 %{
 //Includes the header files in the wrapper code
-#include "control/reverse_interface.h"
-#include "control/script_sender.h"
-#include "control/trajectory_point_interface.h"
 #include "exceptions.h"
 #include "ur/datatypes.h"
 #include "ur/version_information.h"
@@ -142,10 +146,6 @@ using namespace urcl::primary_interface;
 %import "comm/stream.h"
 %import "comm/control_mode.h"
 %import "comm/shell_consumer.h"
-
-%import "control/reverse_interface.h"
-%import "control/script_sender.h"
-%import "control/trajectory_point_interface.h"
 
 %import "types.h"
 
