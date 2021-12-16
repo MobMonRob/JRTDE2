@@ -62,8 +62,8 @@
 #include "types.h"
 
 // Dangerous!
-using namespace urcl;
-using namespace urcl::primary_interface;
+using namespace urcl; //For UrException
+//using namespace urcl::primary_interface;
 %}
 
 

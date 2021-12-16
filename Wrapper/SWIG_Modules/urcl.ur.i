@@ -8,7 +8,9 @@
 
 
 %{
+#include <sstream>
 #include "ur/datatypes.h"
+
 #include "ur/version_information.h"
 #include "ur/tool_communication.h"
 #include "ur/calibration_checker.h"
