@@ -33,7 +33,6 @@
 #include "rtde/control_package_setup_outputs.h"
 #include "rtde/rtde_writer.h"
 
-// Dangerous!
 using namespace urcl; //For UrException
 %}
 

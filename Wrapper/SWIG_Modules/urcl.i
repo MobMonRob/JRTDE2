@@ -9,6 +9,10 @@
 
 %{
 #include "exceptions.h"
+
+//Needed in other modules when accessed
+using namespace urcl; //For UrException
+
 #include "types.h"
 %}
 
