@@ -5,6 +5,7 @@
 
 
 // SWIG lib .i fles
+%include <stdint.i>
 
 
 %{

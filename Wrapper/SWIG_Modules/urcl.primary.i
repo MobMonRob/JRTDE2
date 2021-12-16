@@ -5,6 +5,10 @@
 
 
 // SWIG lib .i fles
+//Make get_Cptr public
+//#define SWIG_SHARED_PTR_TYPEMAPS(CONST, TYPE...) SWIG_SHARED_PTR_TYPEMAPS_IMPLEMENTATION(public, public, CONST, TYPE)
+//%include <std_shared_ptr.i>
+//Important: http://www.swig.org/Doc4.0/Library.html#Library_std_shared_ptr
 
 
 %{

@@ -2,10 +2,23 @@
 
 // Own generic .i files
 %include "_common.i"
+%include "primitive_type_ptr.i"
 
 
 // SWIG lib .i fles
 %include <swiginterface.i>
+%include <std_string.i>
+%include <stdint.i>
+
+
+%primitive_type_ptr(size_t, SizeTContainer)
+
+#define __WORDSIZE 64
+%import "/usr/include/x86_64-linux-gnu/bits/typesizes.h";
+%import "/usr/include/x86_64-linux-gnu/bits/time64.h";
+%import "/usr/include/x86_64-linux-gnu/bits/types.h";
+%include "/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h";
+#undef __WORDSIZE
 
 %{
 #include "comm/producer.h"
