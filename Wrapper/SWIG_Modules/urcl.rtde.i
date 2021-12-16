@@ -47,8 +47,6 @@
 %{
 //Includes the header files in the wrapper code
 #include "exceptions.h"
-#include "queue/readerwriterqueue.h"
-#include "queue/atomicops.h"
 #include "rtde/package_header.h"
 #include "rtde/request_protocol_version.h"
 #include "rtde/control_package_setup_inputs.h"
@@ -72,24 +70,12 @@ using namespace urcl::primary_interface;
 // Begin Imports
 ///////////////////////////
 %import "types.h"
-
-%define AE_GCC
-%define AE_ARCH_X64
-%import "queue/readerwriterqueue.h"
-%import "queue/atomicops.h"
-%enddef
-%enddef
 ///////////////////////////
 // End Imports
 
 
 // Begin Includes
 ///////////////////////////
-//Can't wrap 'operator <<' unless renamed to a valid identifier.
-%warnfilter(503) urcl::VersionInformation;
-%include "ur/version_information.h"
-
-
 //%warnfilter(401) urcl;
 //%warnfilter(516) urcl::UrException;
 //%include "exceptions.h"

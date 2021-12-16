@@ -25,3 +25,7 @@
 //%warnfilter(302) urcl::UrDriver;
 //%import "ur/ur_driver.h"
 
+//Can't wrap 'operator <<' unless renamed to a valid identifier.
+%warnfilter(503) urcl::VersionInformation;
+%include "ur/version_information.h"
+
