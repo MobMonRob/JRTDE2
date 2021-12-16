@@ -25,10 +25,12 @@
 //Other Modules
 %import "urcl.comm.i"
 %import "urcl.control.i"
-//primary
-//ur
+%import "urcl.primary.i"
+%import "urcl.ur.i"
+%import "urcl.queue.i"
 //->Wenn die Module gegenseitige Abhängigkeiten haben, dann diese nur an der entsprechenden Stelle rein machen. Nicht hier.
 
+//Wo gehört das hier dazu?
 #define __WORDSIZE 64
 %import "/usr/include/x86_64-linux-gnu/bits/typesizes.h";
 %import "/usr/include/x86_64-linux-gnu/bits/time64.h";
@@ -36,19 +38,15 @@
 %include "/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h";
 #undef __WORDSIZE
 
+//Wo gehört das hier dazu?
 %primitive_type_ptr(size_t, SizeTContainer)
 
+//Wo gehört das hier dazu?
 %template (VectorString) std::vector<std::string>;
 
 %{
 //Includes the header files in the wrapper code
 #include "exceptions.h"
-#include "ur/datatypes.h"
-#include "ur/version_information.h"
-#include "ur/tool_communication.h"
-#include "ur/calibration_checker.h"
-#include "ur/dashboard_client.h"
-#include "ur/ur_driver.h"
 #include "queue/readerwriterqueue.h"
 #include "queue/atomicops.h"
 #include "rtde/package_header.h"
@@ -74,15 +72,6 @@ using namespace urcl::primary_interface;
 // Begin Imports
 ///////////////////////////
 %import "types.h"
-
-%import "ur/datatypes.h"
-
-//%import "ur/tool_communication.h"
-//%import "ur/calibration_checker.h"
-//%import "ur/dashboard_client.h"
-
-//%warnfilter(302) urcl::UrDriver;
-//%import "ur/ur_driver.h"
 
 %define AE_GCC
 %define AE_ARCH_X64
