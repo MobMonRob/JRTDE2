@@ -1,4 +1,4 @@
-%module urcl__ur;
+%module(directors="1") urcl__ur;
 
 // Own generic .i files
 %include "_common.i"

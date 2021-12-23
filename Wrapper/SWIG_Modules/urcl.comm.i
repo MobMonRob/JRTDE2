@@ -1,4 +1,4 @@
-%module urcl__comm;
+%module(directors="1") urcl__comm;
 
 // Own generic .i files
 %include "_common.i"
@@ -11,14 +11,18 @@
 %include <stdint.i>
 
 
-%primitive_type_ptr(size_t, SizeTContainer)
+//%primitive_type_ptr(size_t, SizeTContainer)
 
+/*
+#pragma SWIG nowarn=205
 #define __WORDSIZE 64
 %import "/usr/include/x86_64-linux-gnu/bits/typesizes.h";
 %import "/usr/include/x86_64-linux-gnu/bits/time64.h";
 %import "/usr/include/x86_64-linux-gnu/bits/types.h";
 %include "/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h";
 #undef __WORDSIZE
+#pragma SWIG nowarn=+205
+*/
 
 %{
 #include "comm/producer.h"
@@ -71,7 +75,7 @@
 %ignore urcl::comm::BinParser::parse;
 %ignore urcl::comm::BinParser::parseRemainder;
 %ignore urcl::comm::BinParser::rawData;
-%include "comm/bin_parser.h"
+//%include "comm/bin_parser.h"
 
 //%template(PrimaryPackageParser) urcl::comm::Parser<urcl::primary_interface::PrimaryPackage>;
 //%import "primary/primary_parser.h"
@@ -97,37 +101,9 @@
 
 // Begin Includes
 ///////////////////////////
-%include "comm/tcp_socket.h"
-
-/*
- * Usage:
- * Inherit from INotifierSwigImpl to use Director Functionality.
-*/
-//The Problem here is that SWIG uses the Base Destructor to delete the
-//INotifier Director and the Base Destructor is not virtual.
-//Would not be a Problem if SWIG would just use the
-//INotifier Director Destructor.
-//%feature("director") urcl::comm::INotifier;
-
-//SWIG Bug: SWIG uses the Base Destructor to delete the INotifier Director
-//RTDE: Not a Bug if it ist not intended to be used polymorphicallly.
-// - But against C++ recommendations that virtual methods imply virtual destructor.
-
-//Just don't use INotifierSWIGImpl.
-//But instead: Inherit from Notifier.java.
-//And use INotifier.java to point to it.
-%interface_impl(urcl::comm::INotifier)
-%include "comm/pipeline.h"
-%feature("director") urcl::comm::Notifier;
-%inline {
-    namespace urcl::comm {
-        class Notifier : public urcl::comm::INotifier {
-            public:
-            virtual ~Notifier() {
-            }
-        };
-    }
-}
+//%include "comm/tcp_socket.h"
 ///////////////////////////
 // End Includes
+
+%import "urcl.comm.INotifier.i"
 

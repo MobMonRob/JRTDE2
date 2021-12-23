@@ -1,4 +1,4 @@
-%module urcl__rtde__data_package;
+%module(directors="1") urcl__rtde__data_package;
 
 // Own generic .i files
 %include "_common.i"
@@ -39,6 +39,8 @@
 %}
 
 ///////////////////////////////////////////////////////////
+
+%ignore urcl::rtde_interface::RUNTIME_STATE;
 
 %ignore urcl::rtde_interface::DataPackage::serializePackage;
 %ignore urcl::rtde_interface::DataPackage::parseWith;

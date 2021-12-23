@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.dhbw.rahmlab.urcl.api;
+package de.dhbw.rahmlab.urcl.test;
 
 import de.dhbw.rahmlab.urcl.impl.urcl.LogLevel;
 import de.dhbw.rahmlab.urcl.impl.urcl__log;

@@ -5,8 +5,6 @@
  */
 package de.dhbw.rahmlab.urcl.test;
 
-import de.dhbw.rahmlab.urcl.api.LogHandler;
-import de.dhbw.rahmlab.urcl.impl.urcl.comm.Notifier;
 import de.dhbw.rahmlab.urcl.impl.urcl.rtde_interface.DataPackage;
 import de.dhbw.rahmlab.urcl.impl.urcl.rtde_interface.RTDEClient;
 
@@ -33,7 +31,6 @@ public class UrclTest {
         final String INPUT_RECIPE_PATH = "/home/fabian/Desktop/_tmp/rtde_input_recipe.txt";
         final long READ_TIMEOUT_MILLISECONDS = 100;
 
-        // Dummy Notifier. Inherit from it use correctly.
         Notifier notifier = new Notifier();
         RTDEClient myClient = new RTDEClient(ROBOT_IP, notifier, OUTPUT_RECIPE_PATH, INPUT_RECIPE_PATH);
 
@@ -71,13 +68,14 @@ public class UrclTest {
                 System.out.println("Could not get fresh data package from robot");
             }
 
+            /*
             if (!myClient.getWriter().sendSpeedSlider(speed_slider_fraction)) {
                 // This will happen for example, when the required keys are not configured inside the input
                 // recipe.
 
                 System.out.println("Sending RTDE data failed.");
             }
-
+             */
             // Change the speed slider so that it will move between 0 and 1 all the time. This is for
             // demonstration purposes only and gains no real value.
             if (speed_slider_increment > 0) {

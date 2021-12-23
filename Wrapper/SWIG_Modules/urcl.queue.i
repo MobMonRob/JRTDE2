@@ -1,4 +1,4 @@
-%module urcl__queue;
+%module(directors="1") urcl__queue;
 
 // Own generic .i files
 %include "_common.i"
