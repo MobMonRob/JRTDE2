@@ -7,6 +7,7 @@ package de.dhbw.rahmlab.urcl.test;
 
 import de.dhbw.rahmlab.urcl.impl.urcl.rtde_interface.DataPackage;
 import de.dhbw.rahmlab.urcl.impl.urcl.rtde_interface.RTDEClient;
+import java.util.Optional;
 
 /**
  *
@@ -64,6 +65,15 @@ public class UrclTest {
 
             if (data_pkg != null) {
                 System.out.println(data_pkg.toString());
+
+                //https://www.universal-robots.com/articles/ur/interface-communication/real-time-data-exchange-rtde-guide/
+                Optional<Double> tool_temperature = data_pkg.getData_double("tool_temperature");
+                if (tool_temperature.isPresent()) {
+                    System.out.println("tool_temperature: " + tool_temperature.get());
+                } else {
+                    System.out.println("!tool_temperature.isPresent()");
+                }
+
             } else {
                 System.out.println("Could not get fresh data package from robot");
             }
