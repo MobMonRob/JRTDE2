@@ -83,9 +83,9 @@
 		return std::optional<T>(std::nullopt);
 	}
 
-	// T & val
-	// in data_package.h
-	// But will be copied
+	// Needed, because the Definition in data_package.h is: T & val.
+	// But will be copied within data_package anyway.
+	// This avoids the need for non-const typemaps.
 	template <typename T>
 	bool setData2(urcl::rtde_interface::DataPackage * self, const std::string& name, const T & val) {
 		return self->setData(name, val);
