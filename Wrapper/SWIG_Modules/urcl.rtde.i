@@ -70,9 +70,22 @@ using namespace urcl; //For UrException
 %ignore "urcl::rtde_interface::RTDEClient::getWriter";
 
 %unique_ptr(urcl::rtde_interface::DataPackage); //getDataPackage
-// Es fehlen noch viele %catches mehr überall im Code!
-%catches(UrException) urcl::rtde_interface::RTDEClient::init;
-%catches(UrException) urcl::rtde_interface::RTDEClient::negotiateProtocolVersion;
+
+//Used to catch all Exceptions thrown within rtde_client.h
+//exeptions.h: All urcl Excpetions inherit from std::runtime_error which itself inherits from std::exception
+%exception {
+    try {
+        $action
+    }
+    catch (const std::exception& e) {
+        SWIG_JavaThrowException(jenv, SWIG_JavaRuntimeException, e.what());
+        return $null;
+    }
+}
+
+//%catches(UrException) urcl::rtde_interface::RTDEClient::init;
+//%catches(UrException) urcl::rtde_interface::RTDEClient::negotiateProtocolVersion;
+
 %include "rtde/rtde_client.h"
 
 //%include "rtde/control_package_start.h"
