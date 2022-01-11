@@ -14,7 +14,7 @@ import java.util.Optional;
  *
  * @author fabian
  */
-public class UrclTest {
+public class RTDEClientTest {
 
     public static void main(String argv[]) {
         RTDEClientExample();

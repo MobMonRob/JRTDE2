@@ -23,7 +23,23 @@
 
 //%import "ur/tool_communication.h"
 //%import "ur/calibration_checker.h"
-//%import "ur/dashboard_client.h"
+
+//TCP Socket
+%import "urcl.comm.i"
+//Used to catch all Exceptions thrown from here on.
+//exeptions.h: All urcl Excpetions inherit from std::runtime_error which itself inherits from std::exception
+%exception {
+    try {
+        $action
+    }
+    catch (const std::exception& e) {
+        SWIG_JavaThrowException(jenv, SWIG_JavaRuntimeException, e.what());
+        return $null;
+    }
+}
+//%catches(const TimeoutException &) urcl::DashboardClient::read;
+//%catches(const UrException &) urcl::DashboardClient::sendAndReceive;
+%include "ur/dashboard_client.h"
 
 //%warnfilter(302) urcl::UrDriver;
 //%import "ur/ur_driver.h"

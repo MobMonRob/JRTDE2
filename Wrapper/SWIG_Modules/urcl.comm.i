@@ -13,7 +13,6 @@
 
 //%primitive_type_ptr(size_t, SizeTContainer)
 
-/*
 #pragma SWIG nowarn=205
 #define __WORDSIZE 64
 %import "/usr/include/x86_64-linux-gnu/bits/typesizes.h";
@@ -22,7 +21,6 @@
 %include "/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h";
 #undef __WORDSIZE
 #pragma SWIG nowarn=+205
-*/
 
 %{
 #include "comm/producer.h"
@@ -101,7 +99,16 @@
 
 // Begin Includes
 ///////////////////////////
-//%include "comm/tcp_socket.h"
+//Needed for better proxy of SocketState enum.
+%include "enums.swg"
+%javaconst(1);
+
+%ignore urcl::comm::TCPSocket::TCPSocket;
+%ignore urcl::comm::TCPSocket::getSocketFD;
+%ignore urcl::comm::TCPSocket::read;
+%ignore urcl::comm::TCPSocket::write;
+%ignore urcl::comm::TCPSocket::close;
+%include "comm/tcp_socket.h"
 ///////////////////////////
 // End Includes
 
