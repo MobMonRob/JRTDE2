@@ -7,6 +7,7 @@ package de.dhbw.rahmlab.urcl.test;
 
 import de.dhbw.rahmlab.urcl.impl.urcl.rtde_interface.DataPackage;
 import de.dhbw.rahmlab.urcl.impl.urcl.rtde_interface.RTDEClient;
+import java.time.Instant;
 import java.util.Optional;
 
 /**
@@ -26,7 +27,7 @@ public class UrclTest {
         System.out.println("---------------------------------------------");
 
         //https://github.com/UniversalRobots/Universal_Robots_Client_Library/blob/1.0.0/examples/rtde_client.cpp
-        final String ROBOT_IP = "192.168.12.2";
+        final String ROBOT_IP = "192.168.12.1";
         //https://github.com/UniversalRobots/Universal_Robots_Client_Library/tree/1.0.0/examples/resources
         final String OUTPUT_RECIPE_PATH = "/home/fabian/Desktop/_tmp/rtde_output_recipe.txt";
         final String INPUT_RECIPE_PATH = "/home/fabian/Desktop/_tmp/rtde_input_recipe.txt";
@@ -42,10 +43,6 @@ public class UrclTest {
             return;
         }
 
-        // We will use the speed_slider_fraction as an example how to write to RTDE
-        double speed_slider_fraction = 1.0;
-        double speed_slider_increment = 0.01;
-
         // Once RTDE communication is started, we have to make sure to read from the interface buffer, as
         // otherwise we will get pipeline overflows. Therefor, do this directly before starting your main
         // loop.
@@ -55,7 +52,15 @@ public class UrclTest {
             return;
         }
 
+        long iteration = 0;
+
         while (true) {
+            System.out.println("...");
+            System.out.println("time: " + Instant.now().toString());
+
+            ++iteration;
+            System.out.println("iteration: " + iteration);
+
             // Read latest RTDE package. This will block for READ_TIMEOUT, so the
             // robot will effectively be in charge of setting the frequency of this loop unless RTDE
             // communication doesn't work in which case the user will be notified.
@@ -64,7 +69,7 @@ public class UrclTest {
             DataPackage data_pkg = myClient.getDataPackage(READ_TIMEOUT_MILLISECONDS);
 
             if (data_pkg != null) {
-                System.out.println(data_pkg.toString());
+                //System.out.println(data_pkg.toString());
 
                 //https://www.universal-robots.com/articles/ur/interface-communication/real-time-data-exchange-rtde-guide/
                 Optional<Double> tool_temperature = data_pkg.getData_double("tool_temperature");
@@ -77,25 +82,6 @@ public class UrclTest {
             } else {
                 System.out.println("Could not get fresh data package from robot");
             }
-
-            /*
-            if (!myClient.getWriter().sendSpeedSlider(speed_slider_fraction)) {
-                // This will happen for example, when the required keys are not configured inside the input
-                // recipe.
-
-                System.out.println("Sending RTDE data failed.");
-            }
-             */
-            // Change the speed slider so that it will move between 0 and 1 all the time. This is for
-            // demonstration purposes only and gains no real value.
-            if (speed_slider_increment > 0) {
-                if (speed_slider_fraction + speed_slider_increment > 1.0) {
-                    speed_slider_increment *= -1;
-                }
-            } else if (speed_slider_fraction + speed_slider_increment < 0.0) {
-                speed_slider_increment *= -1;
-            }
-            speed_slider_fraction += speed_slider_increment;
         }
     }
 }
