@@ -16,7 +16,7 @@ run() {
     mkdir $currentInstall
 
     cd $currentBuild
-    cmake -CMAKE_DISABLE_FIND_PACKAGE_console_bridge -DCMAKE_INSTALL_PREFIX="$currentInstall" $scriptDir/Universal_Robots_Client_Library
+    cmake -DCMAKE_DISABLE_FIND_PACKAGE_console_bridge=TRUE -DCMAKE_INSTALL_PREFIX="$currentInstall" $scriptDir/Universal_Robots_Client_Library
     make --jobs="$((2*$(nproc)))"
     make install
     cd "$scriptDir"
