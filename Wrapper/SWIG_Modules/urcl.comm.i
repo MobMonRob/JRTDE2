@@ -15,10 +15,10 @@
 
 #pragma SWIG nowarn=205
 #define __WORDSIZE 64
-%import "/usr/include/x86_64-linux-gnu/bits/typesizes.h";
-%import "/usr/include/x86_64-linux-gnu/bits/time64.h";
-%import "/usr/include/x86_64-linux-gnu/bits/types.h";
-%include "/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h";
+%import "../timeval/typesizes.h";
+%import "../timeval/time64.h";
+%import "../timeval/types.h";
+%include "../timeval/struct_timeval.h";
 #undef __WORDSIZE
 #pragma SWIG nowarn=+205
 
