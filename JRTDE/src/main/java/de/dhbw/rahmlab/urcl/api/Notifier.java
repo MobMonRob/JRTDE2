@@ -1,8 +1,7 @@
-package de.dhbw.rahmlab.urcl.test;
+package de.dhbw.rahmlab.urcl.api;
 
 /**
- *
- * @author fabian
+ * @author Oliver
  */
 public class Notifier extends de.dhbw.rahmlab.urcl.impl.urcl.comm.Notifier {
 
